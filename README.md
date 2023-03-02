@@ -22,12 +22,13 @@ With the terraform module provided here, a probe can be deployed with a little
 configuration as:
 
 ```terraform
-module "prober" {
+module "cron" {
   source  = "chainguard-dev/cron/google"
   version = "v0.1.2"
 
   name       = "example"
   project_id = var.project_id
+  schedule   = "*/8 * * * *"  # Every 8 minutes.
 
   importpath  = "github.com/chainguard-dev/terraform-google-cron/example"
   working_dir = path.module
