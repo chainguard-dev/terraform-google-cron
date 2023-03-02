@@ -4,7 +4,7 @@ variable "name" {
 
 variable "project_id" {
   type        = string
-  description = "The project that will host the prober."
+  description = "The project that will host the cron job."
 }
 
 variable "region" {
@@ -35,7 +35,7 @@ variable "service_account" {
 
 variable "importpath" {
   type        = string
-  description = "The import path that contains the prober application."
+  description = "The import path that contains the cron application."
 }
 
 variable "working_dir" {

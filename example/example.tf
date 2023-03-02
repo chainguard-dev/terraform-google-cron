@@ -4,7 +4,7 @@ provider "google" {
 
 variable "project_id" {
   type        = string
-  description = "The project that will host the prober."
+  description = "The project that will host the cron job."
 }
 
 # NB: Prefer a Service Account with fewer permissions.
