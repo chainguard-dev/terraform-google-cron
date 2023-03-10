@@ -13,7 +13,7 @@ locals {
   repo = var.repository != "" ? var.repository : "gcr.io/${var.project_id}/${var.name}"
 }
 
-resource "ko_image" "image" {
+resource "ko_build" "image" {
   importpath  = var.importpath
   working_dir = var.working_dir
   base_image  = var.base_image
@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_job" "job" {
     template {
       service_account = var.service_account
       containers {
-        image = ko_image.image.image_refv
+        image = ko_build.image.image_refv
 
         dynamic "env" {
           for_each = var.env
