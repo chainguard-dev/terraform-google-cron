@@ -28,7 +28,7 @@ resource "google_cloud_run_v2_job" "job" {
     template {
       service_account = var.service_account
       containers {
-        image = ko_build.image.image_refv
+        image = ko_build.image.image_ref
 
         dynamic "env" {
           for_each = var.env
