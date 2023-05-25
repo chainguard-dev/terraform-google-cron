@@ -50,6 +50,14 @@ variables passed to the application. These can be specified in the module:
 
 > See our [example](./example/).
 
+or as from a secret in Google Secret Manager:
+
+```terraform
+  env_secret = {
+    "FOO" : "secret_name_in_secret_manager"
+  }
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -59,8 +67,8 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | n/a |
-| <a name="provider_ko"></a> [ko](#provider\_ko) | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.66.0 |
+| <a name="provider_ko"></a> [ko](#provider\_ko) | 0.0.7 |
 
 ## Modules
 
@@ -86,6 +94,7 @@ No modules.
 | <a name="input_region"></a> [region](#input\_region) | The region to run the job. | `string` | `"us-east4"` | no |
 | <a name="input_repository"></a> [repository](#input\_repository) | Container repository to publish images to. | `string` | `""` | no |
 | <a name="input_schedule"></a> [schedule](#input\_schedule) | The cron schedule on which to run the job. | `any` | n/a | yes |
+| <a name="input_secret_env"></a> [secret\_env](#input\_secret\_env) | A map of secrets to mount as environment variables from Google Secrets Manager (e.g. secret\_key=secret\_name) | `map` | `{}` | no |
 | <a name="input_service_account"></a> [service\_account](#input\_service\_account) | The email address of the service account to run the service as, and to invoke the job as. | `string` | n/a | yes |
 | <a name="input_working_dir"></a> [working\_dir](#input\_working\_dir) | The working directory that contains the importpath. | `string` | n/a | yes |
 

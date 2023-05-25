@@ -47,3 +47,8 @@ variable "env" {
   default     = {}
   description = "A map of custom environment variables (e.g. key=value)"
 }
+
+variable "secret_env" {
+  default     = {}
+  description = "A map of secrets to mount as environment variables from Google Secrets Manager (e.g. secret_key=secret_name)"
+}
