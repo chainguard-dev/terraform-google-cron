@@ -17,6 +17,7 @@ resource "ko_build" "image" {
   importpath  = var.importpath
   working_dir = var.working_dir
   base_image  = var.base_image
+  repo        = local.repo
 }
 
 resource "google_cloud_run_v2_job" "job" {
@@ -35,6 +36,19 @@ resource "google_cloud_run_v2_job" "job" {
           content {
             name  = env.key
             value = env.value
+          }
+        }
+
+        dynamic "env" {
+          for_each = var.secret_env
+          content {
+            name = env.key
+            value_source {
+              secret_key_ref {
+                secret  = env.value
+                version = "latest"
+              }
+            }
           }
         }
       }
