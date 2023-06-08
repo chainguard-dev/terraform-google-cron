@@ -9,6 +9,18 @@ terraform {
   }
 }
 
+resource "google_project_service" "cloud_run_api" {
+  service = "run.googleapis.com"
+
+  disable_on_destroy = false
+}
+
+resource "google_project_service" "cloudscheduler" {
+  service = "cloudscheduler.googleapis.com"
+
+  disable_on_destroy = false
+}
+
 locals {
   repo = var.repository != "" ? var.repository : "gcr.io/${var.project_id}/${var.name}"
 }
@@ -69,4 +81,19 @@ resource "google_cloud_scheduler_job" "cron" {
       service_account_email = var.service_account
     }
   }
+  depends_on = [google_project_iam_member.cron_secretmanager_access]
+}
+
+resource "google_project_iam_member" "cron_run_invoker" {
+  project = var.project_id
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${var.service_account}"
+}
+
+resource "google_project_iam_member" "cron_secretmanager_access" {
+  count = var.secret_env != {} ? 1 : 0
+
+  project = var.project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${var.service_account}"
 }
