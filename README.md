@@ -67,8 +67,8 @@ No requirements.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.66.0 |
-| <a name="provider_ko"></a> [ko](#provider\_ko) | 0.0.7 |
+| <a name="provider_google"></a> [google](#provider\_google) | n/a |
+| <a name="provider_ko"></a> [ko](#provider\_ko) | n/a |
 
 ## Modules
 
