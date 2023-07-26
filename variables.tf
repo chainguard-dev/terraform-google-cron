@@ -52,3 +52,9 @@ variable "secret_env" {
   default     = {}
   description = "A map of secrets to mount as environment variables from Google Secrets Manager (e.g. secret_key=secret_name)"
 }
+
+variable "execution_environment" {
+  default     = ""
+  type        = string
+  description = "The execution environment to use for the job."
+}

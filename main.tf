@@ -39,7 +39,8 @@ resource "google_cloud_run_v2_job" "job" {
 
   template {
     template {
-      service_account = var.service_account
+      execution_environment = var.execution_environment
+      service_account       = var.service_account
       containers {
         image = ko_build.image.image_ref
 
