@@ -58,3 +58,9 @@ variable "execution_environment" {
   type        = string
   description = "The execution environment to use for the job."
 }
+
+variable "max_retries" {
+  default     = 3 # 3 retries is the default for Cloud Run jobs
+  type        = number
+  description = "The maximum number of times to retry the job."
+}
