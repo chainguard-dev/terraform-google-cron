@@ -33,9 +33,8 @@ resource "ko_build" "image" {
 }
 
 resource "google_cloud_run_v2_job" "job" {
-  name         = "${var.name}-cron"
-  location     = var.region
-  launch_stage = "BETA"
+  name     = "${var.name}-cron"
+  location = var.region
 
   template {
     template {
@@ -70,6 +69,20 @@ resource "google_cloud_run_v2_job" "job" {
   }
 }
 
+resource "google_service_account" "delivery" {
+  project      = var.project_id
+  account_id   = "${var.name}-dlv"
+  display_name = "Dedicated service account for invoking ${google_cloud_run_v2_job.job.name}."
+}
+
+resource "google_cloud_run_v2_job_iam_binding" "authorize-calls" {
+  project  = var.project_id
+  location = google_cloud_run_v2_job.job.location
+  name     = google_cloud_run_v2_job.job.name
+  role     = "roles/run.invoker"
+  members  = ["serviceAccount:${google_service_account.delivery.email}"]
+}
+
 resource "google_cloud_scheduler_job" "cron" {
   name     = "${var.name}-cron"
   schedule = var.schedule
@@ -80,22 +93,7 @@ resource "google_cloud_scheduler_job" "cron" {
     uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.project_id}/jobs/${google_cloud_run_v2_job.job.name}:run"
 
     oauth_token {
-      service_account_email = var.service_account
+      service_account_email = google_service_account.delivery.email
     }
   }
-  depends_on = [google_project_iam_member.cron_secretmanager_access]
-}
-
-resource "google_project_iam_member" "cron_run_invoker" {
-  project = var.project_id
-  role    = "roles/run.invoker"
-  member  = "serviceAccount:${var.service_account}"
-}
-
-resource "google_project_iam_member" "cron_secretmanager_access" {
-  count = var.secret_env != {} ? 1 : 0
-
-  project = var.project_id
-  role    = "roles/secretmanager.secretAccessor"
-  member  = "serviceAccount:${var.service_account}"
 }

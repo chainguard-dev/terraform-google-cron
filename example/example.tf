@@ -7,16 +7,17 @@ variable "project_id" {
   description = "The project that will host the cron job."
 }
 
-# NB: Prefer a Service Account with fewer permissions.
-data "google_compute_default_service_account" "default" {
+resource "google_service_account" "this" {
+  project    = var.project_id
+  account_id = "terraform-google-cron-example"
 }
 
 module "cron" {
   source = "../"
 
-  project_id            = var.project_id
-  name                  = "example"
-  service_account = data.google_compute_default_service_account.default.email
+  project_id      = var.project_id
+  name            = "example"
+  service_account = google_service_account.this.email
 
   importpath  = "github.com/chainguard-dev/terraform-google-cron/example"
   working_dir = path.module
