@@ -36,6 +36,10 @@ resource "google_cloud_run_v2_job" "job" {
   name     = "${var.name}-cron"
   location = var.region
 
+  # As Direct VPC is in BETA, we need to explicitly set the launch_stage to
+  # BETA in order to use it.
+  launch_stage = var.vpc_access != null ? "BETA" : null
+
   template {
     template {
       execution_environment = var.execution_environment
@@ -63,6 +67,21 @@ resource "google_cloud_run_v2_job" "job" {
               }
             }
           }
+        }
+      }
+
+      dynamic "vpc_access" {
+        for_each = var.vpc_access[*]
+        content {
+          dynamic "network_interfaces" {
+            for_each = vpc_access.value.network_interfaces[*]
+            content {
+              network    = network_interfaces.value.network
+              subnetwork = network_interfaces.value.subnetwork
+              tags       = network_interfaces.value.tags
+            }
+          }
+          egress = vpc_access.value.egress
         }
       }
     }
@@ -96,4 +115,5 @@ resource "google_cloud_scheduler_job" "cron" {
       service_account_email = google_service_account.delivery.email
     }
   }
+
 }

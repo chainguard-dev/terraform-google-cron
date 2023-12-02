@@ -64,3 +64,18 @@ variable "max_retries" {
   type        = number
   description = "The maximum number of times to retry the job."
 }
+
+variable "vpc_access" {
+  default = null
+  type = object({
+    # Currently, only one network interface is supported.
+    network_interfaces = list(object({
+      network    = string
+      subnetwork = string
+      tags       = optional(list(string))
+    }))
+    # Egress is one of "PRIVATE_RANGES_ONLY", "ALL_TRAFFIC", or "ALL_PRIVATE_RANGES"
+    egress = string
+  })
+  description = "The VPC to send egress to. For more information, visit https://cloud.google.com/run/docs/configuring/vpc-direct-vpc"
+}
