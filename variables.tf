@@ -65,6 +65,12 @@ variable "max_retries" {
   description = "The maximum number of times to retry the job."
 }
 
+variable "timeout" {
+  default     = "600s" # 10 minutes is the default for Cloud Run jobs
+  type        = string
+  description = "The maximum amount of time in seconds to allow the job to run."
+}
+
 variable "vpc_access" {
   default = null
   type = object({
