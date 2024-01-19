@@ -45,6 +45,7 @@ resource "google_cloud_run_v2_job" "job" {
       execution_environment = var.execution_environment
       service_account       = var.service_account
       max_retries           = var.max_retries
+      timeout               = var.timeout
       containers {
         image = ko_build.image.image_ref
 
