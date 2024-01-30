@@ -91,7 +91,7 @@ resource "google_cloud_run_v2_job" "job" {
 
 module "delivery-sa-name" {
   source = "./short-unique-name"
-  name   = "${var.name}-dlv"
+  name   = "${var.name}"
 }
 
 resource "google_service_account" "delivery" {
