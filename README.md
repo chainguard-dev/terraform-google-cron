@@ -72,7 +72,9 @@ No requirements.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_delivery-sa-name"></a> [delivery-sa-name](#module\_delivery-sa-name) | ./short-unique-name | n/a |
 
 ## Resources
 
