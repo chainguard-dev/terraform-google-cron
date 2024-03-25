@@ -96,9 +96,14 @@ resource "google_cloud_run_v2_job" "job" {
   }
 }
 
+module "delivery-sa-name" {
+  source = "./short-unique-name"
+  name   = var.name
+}
+
 resource "google_service_account" "delivery" {
   project      = var.project_id
-  account_id   = "${var.name}-dlv"
+  account_id   = module.delivery-sa-name.name
   display_name = "Dedicated service account for invoking ${google_cloud_run_v2_job.job.name}."
 }
 
