@@ -71,6 +71,18 @@ variable "timeout" {
   description = "The maximum amount of time in seconds to allow the job to run."
 }
 
+variable "parallelism" {
+  default     = ""
+  type        = string
+  description = "Specifies the maximum desired number of tasks the execution should run at given time. Must be <= task_count."
+}
+
+variable "task_count" {
+  default     = "1"
+  type        = string
+  description = "Specifies the desired number of tasks the execution should run."
+}
+
 variable "cpu" {
   type        = string
   default     = "1000m"
